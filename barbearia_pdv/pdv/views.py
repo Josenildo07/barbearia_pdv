@@ -1,5 +1,3 @@
-from django.shortcuts import render
-
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, authenticate, logout
@@ -16,7 +14,7 @@ def login_view(request):
         
         if user is not None:
             auth_login(request, user)
-            return redirect('dashbord') # redireciona para o dashbord após login
+            return redirect('dashboard') # redireciona para o dashbord após login
     return render(request, 'pdv/login.html')
 
 def logout_view(request):
@@ -27,7 +25,7 @@ def register_view(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit = False)
+            user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
             user.save()
             return redirect('login')
@@ -66,13 +64,17 @@ def criar_agendamento(request):
             return redirect('agendamentos')
     else:
         form = AgendamentoForm()
-    return render(request, 'pdv/criar_agendamento.html', {'form': form})  
+    return render(request, 'pdv/criar_agendamento.html', {'form': form})
 
 @login_required
 def agendamentos_view(request):
     agendamentos = Agendamento.objects.all()
     return render(request, 'pdv/agendamentos.html', {'agendamentos': agendamentos})
 
+@login_required
+def servicos_view(request):
+    servicos = Servico.objects.all()
+    return render(request, 'pdv/servicos.html', {'servicos': servicos})
 
 @login_required
 def criar_servico(request):
@@ -85,10 +87,13 @@ def criar_servico(request):
         form = ServicoForm()
     return render(request, 'pdv/criar_servico.html', {'form': form})
 
+
+
 @login_required
 def relatorios_view(request):
     agendamentos = Agendamento.objects.all()
     total_vendas = sum(agendamento.servico.preco for agendamento in agendamentos)
-    return render(request, 'pdv/relatorios.html', {'agendamentos' : agendamentos, 'total_vendas': total_vendas})
+
+    return render(request, 'pdv/relatorios.html', {'agendamentos': agendamentos, 'total_vendas': total_vendas})
 
 

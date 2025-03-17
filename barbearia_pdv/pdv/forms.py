@@ -16,6 +16,7 @@ class AgendamentoForm(forms.ModelForm):
     class Meta:
         model = Agendamento
         fields = ['cliente', 'servico',   'data_hora']
+        widgets = {'data_hora': forms.DateInput(attrs={'placeholder': 'DD/MM/AAAA', 'type': 'date'}),}
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)

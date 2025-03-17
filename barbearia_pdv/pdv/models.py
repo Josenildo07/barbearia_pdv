@@ -6,7 +6,7 @@ class Cliente(models.Model):
     telefone = models.CharField(max_length=15)
     email = models.EmailField()
 
-    def __str__(self):
+    def __str__(self): # o def é uma função de retorno. O self é um inicializador da função. Estou dizendo pra ele que o nome é obrigatório, mas tel e email não.
         return self.nome
     
 class Servico(models.Model):
